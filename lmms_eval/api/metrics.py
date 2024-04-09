@@ -1,3 +1,5 @@
+import os
+import inspect
 import math
 from collections.abc import Iterable
 
@@ -143,8 +145,17 @@ def acc_mutual_info_fn(items):  # This is a passthrough function
     return items
 
 
-exact_match = evaluate.load("exact_match")
-
+try:
+    exact_match = evaluate.load("exact_match")
+except:
+    try:
+        evaluate_install_root = os.path.dirname(inspect.getfile(evaluate))
+        evaluate_metrics_root = os.path.join(evaluate_install_root, "metrics")
+        exact_match = evaluate.load(os.path.join(evaluate_metrics_root, "exact_match"))
+    except Exception as e:
+        eval_logger.error("Could not load exact_match. Either connect to the Internet or use pip install -e . after clone the HF evaluate repo.")
+        raise e
+    
 
 @register_metric(
     metric="exact_match",
