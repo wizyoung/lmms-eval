@@ -155,7 +155,6 @@ except:
     except Exception as e:
         eval_logger.error("Could not load exact_match. Either connect to the Internet or use pip install -e . after clone the HF evaluate repo.")
         raise e
-    
 
 @register_metric(
     metric="exact_match",

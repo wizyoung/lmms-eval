@@ -1,4 +1,7 @@
 import os
+import logging
+
+eval_logger = logging.getLogger("lmms-eval")
 
 AVAILABLE_MODELS = {
     "llava": "Llava",
@@ -12,8 +15,8 @@ AVAILABLE_MODELS = {
 for model_name, model_class in AVAILABLE_MODELS.items():
     try:
         exec(f"from .{model_name} import {model_class}")
-    except ImportError:
-        pass
+    except ImportError as e:
+        eval_logger.error(f"Error importing {model_class}: {e}")
 
 
 import hf_transfer
